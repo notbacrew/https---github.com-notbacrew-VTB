@@ -1,9 +1,65 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
-    <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
-        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+    <entity name="ConnectedBank" representedClassName="ConnectedBank" syncable="YES" codeGenerationType="class">
+        <attribute name="bankId" optional="NO" attributeType="String"/>
+        <attribute name="bankName" optional="NO" attributeType="String"/>
+        <attribute name="baseURL" optional="YES" attributeType="String"/>
+        <attribute name="clientId" optional="YES" attributeType="String"/>
+        <attribute name="consentId" optional="YES" attributeType="String"/>
+        <attribute name="requestingBankId" optional="YES" attributeType="String"/>
+        <attribute name="connectedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="isActive" optional="YES" attributeType="Boolean" usesScalarValueType="YES" defaultValueString="YES"/>
+        <relationship name="accounts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="BankAccount" inverseName="bank" inverseEntity="BankAccount"/>
+    </entity>
+    <entity name="BankAccount" representedClassName="BankAccount" syncable="YES" codeGenerationType="class">
+        <attribute name="accountId" optional="NO" attributeType="String"/>
+        <attribute name="accountNumber" optional="YES" attributeType="String"/>
+        <attribute name="accountType" optional="YES" attributeType="String"/>
+        <attribute name="balance" optional="YES" attributeType="Decimal" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="availableBalance" optional="YES" attributeType="Decimal" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="currency" optional="YES" attributeType="String" defaultValueString="RUB"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="status" optional="YES" attributeType="String"/>
+        <attribute name="openedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="lastSyncDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="bank" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ConnectedBank" inverseName="accounts" inverseEntity="ConnectedBank"/>
+        <relationship name="transactions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Transaction" inverseName="account" inverseEntity="Transaction"/>
+    </entity>
+    <entity name="Transaction" representedClassName="Transaction" syncable="YES" codeGenerationType="class">
+        <attribute name="transactionId" optional="NO" attributeType="String"/>
+        <attribute name="amount" optional="NO" attributeType="Decimal" usesScalarValueType="NO"/>
+        <attribute name="currency" optional="YES" attributeType="String" defaultValueString="RUB"/>
+        <attribute name="transactionDate" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="transactionDescription" optional="YES" attributeType="String"/>
+        <attribute name="category" optional="YES" attributeType="String"/>
+        <attribute name="merchantName" optional="YES" attributeType="String"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
+        <attribute name="status" optional="YES" attributeType="String"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BankAccount" inverseName="transactions" inverseEntity="BankAccount"/>
+    </entity>
+    <entity name="Budget" representedClassName="Budget" syncable="YES" codeGenerationType="class">
+        <attribute name="budgetId" optional="NO" attributeType="String"/>
+        <attribute name="name" optional="NO" attributeType="String"/>
+        <attribute name="totalLimit" optional="NO" attributeType="Decimal" usesScalarValueType="NO"/>
+        <attribute name="period" optional="YES" attributeType="String"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="createdDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="BudgetCategory" inverseName="budget" inverseEntity="BudgetCategory"/>
+    </entity>
+    <entity name="BudgetCategory" representedClassName="BudgetCategory" syncable="YES" codeGenerationType="class">
+        <attribute name="categoryId" optional="NO" attributeType="String"/>
+        <attribute name="name" optional="NO" attributeType="String"/>
+        <attribute name="limit" optional="NO" attributeType="Decimal" usesScalarValueType="NO"/>
+        <attribute name="spent" optional="YES" attributeType="Decimal" defaultValueString="0.0" usesScalarValueType="NO"/>
+        <attribute name="categoryType" optional="YES" attributeType="String"/>
+        <relationship name="budget" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Budget" inverseName="categories" inverseEntity="Budget"/>
     </entity>
     <elements>
-        <element name="Item" positionX="-63" positionY="-18" width="128" height="44"/>
+        <element name="ConnectedBank" positionX="-36" positionY="9" width="128" height="148"/>
+        <element name="BankAccount" positionX="-27" positionY="27" width="128" height="243"/>
+        <element name="Transaction" positionX="-18" positionY="18" width="128" height="253"/>
+        <element name="Budget" positionX="9" positionY="9" width="128" height="148"/>
+        <element name="BudgetCategory" positionX="18" positionY="18" width="128" height="148"/>
     </elements>
 </model>
